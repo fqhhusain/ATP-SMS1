@@ -1,0 +1,118 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+
+char token[100];
+int hitung=0;
+
+void merge(char arr[], int l, int m, int r)
+{
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 = r - m;
+    char L[n1], R[n2];
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+ 
+
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        }
+        else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+ 
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
+ 
+void mergeSort(char arr[], int l, int r)
+{
+    if (l < r) {
+        int m = l + (r - l) / 2;
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+ 
+        merge(arr, l, m, r);
+    }
+}
+ 
+void printArray(char A[], int size)
+{
+    int i;
+    for (i = 0; i < size; i++)
+        printf("%d ", A[i]);
+    printf("\n");
+}
+
+char binarySearch(char array[], int n, int x) {
+  int low=0;
+  int high=n-1;
+  char output;
+  int ketemu=-1;
+  while (low <= high) {
+    int mid = low + (high - low) / 2;
+    int nilai=array[mid];
+    nilai=nilai<<2;
+    hitung++;
+    if(nilai<=x){
+        output=array[mid];
+        low=mid+1;
+        ketemu=1;
+    }else{
+        high=mid-1;
+    }
+  }
+  if(ketemu!=-1){
+      return output;
+  }else{
+      return -1;
+  }
+}
+
+int main() {
+
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */  
+    int m,n;
+
+    scanf("%d%d",&m,&n);
+    scanf("%s",token);
+    int pjg=strlen(token);
+    mergeSort(token, 0, pjg-1);
+    //printf("%s",token);
+    int y=m-n-1;
+    int result=binarySearch(token,pjg,y);
+    if(hitung>n){
+        printf("Mesin berkata: kupon kurang, dilakukan lebih dari %d kali searching",n);
+    }else{
+    if(result!=-1){
+        printf("Mesin berkata: beli TOKEN %c",result);
+    }else{
+        char lowerr=token[0];
+        int harga=lowerr<<2;
+        int kurang=harga-y;
+        printf("Mesin berkata: perlu %d kupon lagi untuk membeli TOKEN %c",kurang,lowerr);
+    }
+    }
+    return 0;
+}
+
